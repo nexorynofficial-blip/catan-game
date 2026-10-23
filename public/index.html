@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>Catan — Private Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HOME SCREEN — colonist layout -->
+  <section id="screen-home" class="screen">
+    <!-- Left vertical nav -->
+    <aside class="sidenav">
+      <div class="brand">NEXORYN<br>CATAN</div>
+      <button class="navitem active" data-pick-tab="host"><span class="ico">🎮</span>Play</button>
+      <button class="navitem" data-pick-tab="join"><span class="ico">🚪</span>Join</button>
+      <button class="navitem" id="rulesNav"><span class="ico">📖</span>Rules</button>
+      <div class="spacer"></div>
+      <button class="navitem" id="themeToggle"><span class="ico">◐</span>Theme</button>
+    </aside>
+
+    <!-- Main area -->
+    <div class="home-main">
+      <!-- Top bar -->
+      <div class="home-topbar">
+        <h1 style="margin:0;font-size:22px;font-weight:900;letter-spacing:-0.01em">Play with friends</h1>
+        <div class="spacer"></div>
+        <button class="icon-btn" id="rulesBtn" title="Rules">📖</button>
+      </div>
+
+      <!-- Body: content + right promo -->
+      <div class="home-body">
+        <div class="home-content">
+          <!-- Tabs -->
+          <div class="tab-bar">
+            <button class="tab active" data-tab="host">⚔ Host</button>
+            <button class="tab" data-tab="join">🚪 Join</button>
+          </div>
+
+          <!-- Cards -->
+          <div class="home-cards">
+            <!-- Host card -->
+            <div class="panel" data-card="host">
+              <div class="panel-head">
+                <div class="ico">🏗️</div>
+                <div>
+                  <h2>Host a game</h2>
+                  <div class="sub">Create a private room</div>
+                </div>
+              </div>
+
+              <label>Your name<input id="hostName" placeholder="e.g. Nexoryn" maxlength="20"></label>
+              <label>Map<select id="mapSelect"></select></label>
+
+              <label>Mode</label>
+              <div class="mode-row" id="modeRow"></div>
+
+              <label>Room code (optional)
+                <input id="hostCode" placeholder="auto" maxlength="8" style="text-transform:uppercase">
+              </label>
+
+              <div style="flex:1"></div>
+              <button id="hostBtn" class="cta green">Create Room</button>
+            </div>
+
+            <!-- Join card -->
+            <div class="panel" data-card="join">
+              <div class="panel-head">
+                <div class="ico">🚪</div>
+                <div>
+                  <h2>Join a game</h2>
+                  <div class="sub">Enter a room code</div>
+                </div>
+              </div>
+
+              <label>Your name<input id="joinName" placeholder="e.g. Friend" maxlength="20"></label>
+              <label>Room code
+                <input id="joinCode" placeholder="ABCDE" maxlength="8"
+                       style="letter-spacing:0.2em;text-transform:uppercase;font-weight:900">
+              </label>
+
+              <div style="flex:1"></div>
+              <button id="joinBtn" class="cta orange">Join Room</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right promo -->
+        <aside class="home-side">
+          <h3>Private Catan</h3>
+          <div class="board-art">🏝️</div>
+          <p><strong>3–6 players</strong><br>Base game + Cities &amp; Knights<br>7 maps · live trading</p>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:center">
+            <span class="chip" style="padding:5px 9px;font-size:10px">🌾</span>
+            <span class="chip" style="padding:5px 9px;font-size:10px">🧱</span>
+            <span class="chip" style="padding:5px 9px;font-size:10px">🐑</span>
+            <span class="chip" style="padding:5px 9px;font-size:10px">🌲</span>
+            <span class="chip" style="padding:5px 9px;font-size:10px">⛰️</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME SCREEN -->
+  <section id="screen-game" class="screen hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="room-info">
+        <strong id="roomCode">—</strong>
+        <button id="rulesBtn2" class="icon-btn" title="Rules">📖</button>
+        <button id="historyBtn" class="icon-btn" title="Trade history">⟳</button>
+        <button id="copyLink" class="icon-btn" title="Copy join link">⧉</button>
+        <button id="themeToggle2" class="icon-btn" title="Toggle theme">◐</button>
+      </div>
+      <div id="players" class="players"></div>
+      <div id="turnInfo" class="turn-info"></div>
+      <div id="dice" class="dice"></div>
+      <div id="actionButtons" class="action-buttons"></div>
+      <div id="log" class="log"></div>
+      <div id="chatBox" class="chat">
+        <div id="chatLog" class="chat-log"></div>
+        <input id="chatInput" placeholder="Say something…" maxlength="200">
+      </div>
+    </aside>
+
+    <main id="boardWrap" class="board-wrap">
+      <canvas id="board"></canvas>
+      <div id="banner" class="banner hidden"></div>
+      <div id="hexTip" class="hex-tip hidden"></div>
+      <div id="floats" class="floats"></div>
+      <div class="zoom-controls">
+        <button id="zoomIn"  title="Zoom in">+</button>
+        <button id="zoomOut" title="Zoom out">−</button>
+        <button id="zoomFit" title="Fit to screen">⤢</button>
+      </div>
+      <div id="hud" class="hud">
+        <div id="hand" class="hand"></div>
+      </div>
+    </main>
+
+    <div id="modal" class="modal hidden">
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </section>
+
+  <script src="js/icons.js"></script>
+  <script src="js/net.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
